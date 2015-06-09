@@ -68,5 +68,7 @@ AlipayGlobal::Service::Trade.create(
 | seller_industry | optional* | For PSG only The industry type of sub-merchant who initiate the request. |
 
 \* Normal Mechant: optional. FOR PSG: compulsory
+
 \*\*\* Attention1:In the case a merchant wish to price their products in RMB, the merchant shall not change the value of the currency parameter, instead he shall just replace the total_fee with rmb_fee, and then his trade will appears in RMB in front of user.
+
 \*\*\* Attention2:The request parameters can only be accepted by the Alipay system if they are signed according to the signature mechanism specified in this document.The parameter “timeout_rule”, the default value is 12h. If you want to use this parameter to change timing, you need to contact Alipay technical. Otherwise you will have an error.
