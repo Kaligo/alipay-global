@@ -81,3 +81,33 @@ AlipayGlobal::Service::Trade.create(
 \*\*\* Attention1:In the case a merchant wish to price their products in RMB, the merchant shall not change the value of the currency parameter, instead he shall just replace the total_fee with rmb_fee, and then his trade will appears in RMB in front of user.
 
 \*\*\* Attention2:The request parameters can only be accepted by the Alipay system if they are signed according to the signature mechanism specified in this document.The parameter “timeout_rule”, the default value is 12h. If you want to use this parameter to change timing, you need to contact Alipay technical. Otherwise you will have an error.
+
+
+#### Service::Exchange
+
+```ruby
+current_rates
+```
+
+#### Definition
+
+```ruby
+AlipayGlobal::Service::Exchange.current_rates()
+```
+
+#### Example
+
+```ruby
+AlipayGlobal::Service::Exchange.current_rates()
+
+# Results: hash with following content
+# => {"AUD"=>{:time=>#<DateTime: 2012-03-30T11:25:37+00:00 ((2456017j,41137s,0n),+0s,2299161j)>, :rate=>6.4485}, "CAD"=>{:time=>#<DateTime: 2012-03-30T11:25:37+00:00 ((2456017j,41137s,0n),+0s,2299161j)>, :rate=>6.6682}, "CHF"=>{:time=>#<DateTime: 2012-04-24T11:25:37+00:00 ((2456042j,41137s,0n),+0s,2299161j)>, :rate=>6.829}, "DKK"=>{:time=>#<DateTime: 2012-04-24T11:25:37+00:00 ((2456042j,41137s,0n),+0s,2299161j)>, :rate=>2.0}, "EUR"=>{:time=>#<DateTime: 2012-04-24T11:25:37+00:00 ((2456042j,41137s,0n),+0s,2299161j)>, :rate=>8.3364}, "GBP"=>{:time=>#<DateTime: 2013-07-01T11:06:35+00:00 ((2456475j,39995s,0n),+0s,2299161j)>, :rate=>10.6744}, "HKD"=>{:time=>#<DateTime: 2012-02-27T12:55:00+00:00 ((2455985j,46500s,0n),+0s,2299161j)>, :rate=>0.8145}, "JPY"=>{:time=>#<DateTime: 2012-12-24T17:43:59+00:00 ((2456286j,63839s,0n),+0s,2299161j)>, :rate=>0.05638}, "KRW"=>{:time=>#<DateTime: 2012-10-18T14:07:10+00:00 ((2456219j,50830s,0n),+0s,2299161j)>, :rate=>0.001111}, "SEK"=>{:time=>#<DateTime: 2012-02-27T12:55:00+00:00 ((2455985j,46500s,0n),+0s,2299161j)>, :rate=>0.9375}, "SGD"=>{:time=>#<DateTime: 2012-02-27T12:55:00+00:00 ((2455985j,46500s,0n),+0s,2299161j)>, :rate=>4.938}, "USD"=>{:time=>#<DateTime: 2013-11-22T11:25:37+00:00 ((2456619j,41137s,0n),+0s,2299161j)>, :rate=>6.5487}}
+```
+
+#### Results
+
+Hash contains objects representing each currency
+
+| Attribute | Data Type | Description |
+| time | DateTime | When Alipay retrieved the date and time of this currency rate |
+| rate | float | Rate for 1 FOREX Unit : Units of RMB/CNY  |
