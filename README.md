@@ -106,9 +106,57 @@ AlipayGlobal::Service::Exchange.current_rates()
 
 #### Results
 
-Hash contains objects representing each currency
+Hash contains objects representing each currency. Each object is represented by it's named currency code.
 
 | Attribute | Data Type | Description |
-| --- | ----------- | ----------- |
+| --------- | --------- | ----------- |
 | time | DateTime | When Alipay retrieved the date and time of this currency rate |
 | rate | float | Rate for 1 FOREX Unit : Units of RMB/CNY  |
+
+
+#### Service::Notification
+
+It is necessary for the partner system to verify the integrity and correctness of Alipay’snotification. Intheinterestofsystem’shealthiness,itisstrongly recommended that the partner system apply such verification mechanism.
+
+In order to guarantee the interface will be used legally, the partner system can only verify the notifications within the last 1 minute (this configuration is subject to change, and such change will not be notified).
+
+```ruby
+check
+```
+
+#### Definition
+
+```ruby
+AlipayGlobal::Service::Notification.check({
+  notify_id: 'your_notification_id_received'
+})
+```
+
+#### Example
+
+```ruby
+AlipayGlobal::Service::Notification.check({
+  notify_id: 'your_notification_id_received'
+})
+
+# Results: Alipay will respond with whether this notification is valid or not?
+# => "false"
+```
+
+#### Parameters
+
+| Key | Requirement | Description |
+| --- | ----------- | ----------- |
+| notify_id | required | The ID of Alipay system’s notification. |
+
+\* Provided: provisioned by setting these environment variables from the start
+
+#### Results
+
+Hash contains objects representing each currency. Each object is represented by it's named currency code.
+
+| Result | Description |
+| ------ | ----------- |
+| invalid | The input parameter is invalid. |
+| true | Authentication passed. |
+| false | Authentication failed. |
