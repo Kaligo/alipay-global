@@ -4,9 +4,10 @@ module AlipayGlobal
       AlipayGlobal.environment == "PRODUCTION" ? "https://mapi.alipay.com/gateway.do?" : "https://mapi.alipay.net/gateway.do?"
     end
 
-    def self.request_uri(params)
+    def self.request_uri(params, sign = true)
       uri = URI(gateway_url)
-      uri.query = URI.encode_www_form(sign_params(params))
+      processed_params = sign ? sign_params(params) : params
+      uri.query = URI.encode_www_form(processed_params)
       uri
     end
 

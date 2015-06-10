@@ -4,8 +4,6 @@ module AlipayGlobal
   module Service
     module Exchange
 
-      @exchange_format = [:date,:time,:currency,:rate]
-
       def self.current_rates
         exchange_rates_resp = {}
         open(build_request) do |file|

@@ -8,6 +8,7 @@ require 'alipay_global/utils'
 require 'alipay_global/service'
 require 'alipay_global/service/trade'
 require 'alipay_global/service/exchange'
+require 'alipay_global/service/notification'
 
 module AlipayGlobal
   

@@ -109,5 +109,6 @@ AlipayGlobal::Service::Exchange.current_rates()
 Hash contains objects representing each currency
 
 | Attribute | Data Type | Description |
+| --- | ----------- | ----------- |
 | time | DateTime | When Alipay retrieved the date and time of this currency rate |
 | rate | float | Rate for 1 FOREX Unit : Units of RMB/CNY  |
