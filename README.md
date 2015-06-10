@@ -33,6 +33,14 @@ create
 AlipayGlobal::Service::Trade.create({ARGUMENTS})
 ```
 
+#### Issues (awaiting resolution)
+
+1. create_forex_trade
+  1. rmb_fee issues with MD5 Signature (awaiting Alipay tech response)
+  2. RSA integration: User needs to work with Alipay team to exchange RSA public keys to properly test the content
+2. testing environment
+  1. Alipay mobile site for testing is down. works in production.
+
 #### Example
 
 ```ruby
@@ -50,6 +58,7 @@ AlipayGlobal::Service::Trade.create(
 
 | Key | Requirement | Description |
 | --- | ----------- | ----------- |
+| mobile | optional **(unique to this gem)** | true/false boolean value. Tells the gem whether you want to direct the user to Alipay's mobile friendly site | 
 | out_trade_no | required | Order number in your application. (Unique inside the partner system) |
 | subject | required | The name of the goods. Cannot contain special symbols |
 | currency | required | The settlement currency merchant named in contract. Refer to abbreviation of currencies |

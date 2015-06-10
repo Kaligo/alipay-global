@@ -4,16 +4,16 @@ module AlipayGlobal
       AlipayGlobal.environment == "PRODUCTION" ? "https://mapi.alipay.com/gateway.do?" : "https://mapi.alipay.net/gateway.do?"
     end
 
-    def self.request_uri(params, options = {})
+    def self.request_uri(params)
       uri = URI(gateway_url)
-      uri.query = URI.encode_www_form(sign_params(params, options))
+      uri.query = URI.encode_www_form(sign_params(params))
       uri
     end
 
-    def self.sign_params(params, options = {})
+    def self.sign_params(params)
       params.merge(
         'sign_type' => AlipayGlobal.sign_type.upcase,
-        'sign'      => AlipayGlobal::Sign.generate(params, options)
+        'sign'      => AlipayGlobal::Sign.generate(params)
       )
     end
 
