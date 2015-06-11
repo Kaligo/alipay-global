@@ -160,3 +160,86 @@ Hash contains objects representing each currency. Each object is represented by 
 | invalid | The input parameter is invalid. |
 | true | Authentication passed. |
 | false | Authentication failed. |
+
+#### Service::Reconciliation
+
+After certain period of time, the oversea merchant partner needs to verify the past transaction details in order to make sure the correctness and integrity of transaction records. This can be performed by using the reconciliation file downloading interface. The starting and end dates should be provided within a 10-day interval. Same-day transaction details cannot be accessed by this interface.
+
+```ruby
+check
+```
+
+#### Definition
+
+```ruby
+AlipayGlobal::Service::Reconciliation.request({
+  'start_date'=> '20120202',
+  'end_date'=> '20120205'
+})
+```
+
+#### Parameters
+
+| Key | Requirement | Description |
+| --- | ----------- | ----------- |
+| start_date | required | The start date of the reconciliation period, formatted as YYYYMMDD |
+| end_date | required | The end date of the reconciliation period, formatted as YYYYMMDD |
+
+#### Example
+
+```ruby
+AlipayGlobal::Service::Reconciliation.request({
+  'start_date'=> '20120202',
+  'end_date'=> '20120205'
+})
+
+# Results: Alipay will respond with either the file's array of results, false, or throw an ArgumentError?
+# => "false"
+```
+
+
+
+#### Results
+
+''Failure Case 1'': No transactions found
+```ruby
+AlipayGlobal::Service::Reconciliation.request(params)
+
+# Results: If no transaction records found
+# => "false"
+```
+
+''Failure Case 2'': Errors in arguments
+Argument Error with the following messages will be thrown
+
+| Error Message | Description |
+| ------------- | ----------- |
+| File download failed:Over 10 days to Date period | The supplied date range exceeds 10 days |
+| <?xml version=\"1.0\" encoding=\"GBK\"?>\n<alipay><is_success>F</is_success><error>ILLEGAL_PARTNER</error></alipay> | Partner id that is set does not exist in Alipay's system/ or isn't active in the production/testing environment yet |
+| File download failed:Finish date ahead of begin date | Invalid date types supplied |
+| File download failed:Illegal Date period! | No date/ Invalid date data |
+| File download failed:Finish date not ahead of today | Dates supplied for reconciliations should be before current date (Alipay's probably) |
+
+''Untested Cases''
+The following cases have yet to be tested
+
+| Errors | Description |
+| ------ | ----------- |
+| Date format incorrect YYYYMMDD | Unable to recreate scenario |
+| System exception |  |
+| Internet connected exception ,please try later |  |
+
+''Success Case'': Array containing the results of transactions in these periods.
+
+| Result | Description |
+| ------ | ----------- |
+| invalid | The input parameter is invalid. |
+| true | Authentication passed. |
+| false | Authentication failed. |
+
+```ruby
+AlipayGlobal::Service::Reconciliation.request(params)
+
+# Results: If no transaction records found
+# => [{:partner_transaction_id=>"20131219-144657-234", :amount=>"0.11", :currency=>"EUR", :transaction_time=>#<DateTime: 2013-12-19T21:52:28+00:00 ((2456646j,78748s,0n),+0s,2299161j)>, :settlement_time=>"", :transaction_type=>"P", :service_charge=>"0.00", :status=>"P", :remarks=>"Test"}, {:partner_transaction_id=>"1326557", :amount=>"2125.25", :currency=>"HKD", :transaction_time=>#<DateTime: 2013-12-19T17:58:40+00:00 ((2456646j,64720s,0n),+0s,2299161j)>, :settlement_time=>"", :transaction_type=>"P", :service_charge=>"21.25", :status=>"P", :remarks=>"Grey Hours Limited (Testing)"}, {:partner_transaction_id=>"1326555", :amount=>"2125.25", :currency=>"HKD", :transaction_time=>#<DateTime: 2013-12-19T17:56:37+00:00 ((2456646j,64597s,0n),+0s,2299161j)>, :settlement_time=>"", :transaction_type=>"P", :service_charge=>"21.25", :status=>"P", :remarks=>"Grey Hours Limited (Testing)"}, {:partner_transaction_id=>"1326244", :amount=>"0.01", :currency=>"HKD", :transaction_time=>#<DateTime: 2013-12-19T16:11:26+00:00 ((2456646j,58286s,0n),+0s,2299161j)>, :settlement_time=>"", :transaction_type=>"P", :service_charge=>"0.00", :status=>"P", :remarks=>"MICROS-Fidelio Information Systems Co. Limited (Testing)"}]
+```
