@@ -201,7 +201,7 @@ AlipayGlobal::Service::Reconciliation.request({
 
 #### Results
 
-** Failure Case 1 ** : No transactions found
+**Failure Case 1** : No transactions found
 ```ruby
 AlipayGlobal::Service::Reconciliation.request(params)
 
@@ -209,7 +209,7 @@ AlipayGlobal::Service::Reconciliation.request(params)
 # => "false"
 ```
 
-** Failure Case 2 ** : Errors in arguments
+**Failure Case 2** : Errors in arguments
 Argument Error with the following messages will be thrown
 
 | Error Message | Description |
@@ -220,7 +220,7 @@ Argument Error with the following messages will be thrown
 | File download failed:Illegal Date period! | No date/ Invalid date data |
 | File download failed:Finish date not ahead of today | Dates supplied for reconciliations should be before current date (Alipay's probably) |
 
-** Untested Cases **
+**Untested Cases**
 The following cases have yet to be tested
 
 | Errors | Description |
@@ -229,7 +229,7 @@ The following cases have yet to be tested
 | System exception |  |
 | Internet connected exception ,please try later |  |
 
-** Success Case ** : Array containing the results of transactions in these periods.
+**Success Case** : Array containing the results of transactions in these periods.
 
 ```ruby
 AlipayGlobal::Service::Reconciliation.request(params)
