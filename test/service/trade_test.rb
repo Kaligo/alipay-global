@@ -32,12 +32,12 @@ describe "AlipayGlobal::Service::Trade", "Forex trade actions" do
         params = {
           notify_url: 'https://example.com/notify',
           subject: 'product_name',
-          out_trade_no: '1234',
-          rmb_fee: '500',
-          currency: nil,
+          out_trade_no: '12345',
+          rmb_fee: '0.10',
+          currency: 'USD',
           supplier: 'company_name'
         }
-        assert_equal 'https://mapi.alipay.net/gateway.do?service=create_forex_trade&_input_charset=utf-8&partner=2088101122136241&notify_url=https%3A%2F%2Fexample.com%2Fnotify&subject=product_name&out_trade_no=1234&rmb_fee=500&currency&supplier=company_name&sign_type=MD5&sign=72f5fc1dd947f9ca037cb6acc607474b', @alipay::Service::Trade.create(params)
+        assert_equal 'https://mapi.alipay.net/gateway.do?service=create_forex_trade&_input_charset=utf-8&partner=2088101122136241&notify_url=https%3A%2F%2Fexample.com%2Fnotify&subject=product_name&out_trade_no=12345&rmb_fee=0.10&currency=USD&supplier=company_name&sign_type=MD5&sign=4986b31c8febb978ee6d6c45f76614ac', @alipay::Service::Trade.create(params)
       end
 
       it "total_fee: should create the correct url" do
@@ -53,6 +53,18 @@ describe "AlipayGlobal::Service::Trade", "Forex trade actions" do
       end
     end
 
+  end
+
+  describe "#refund" do
+    it "should transact refund correctly" do
+      sample_refunds = [
+        { new_transaction_id: '111222333', old_transaction_id: '444555666', currency: 'USD', refund_sum: '200.00', refund_time: '20120330235959', refund_reason: 'bello minions' },
+        { new_transaction_id: '111222333', old_transaction_id: '444555667', currency: 'USD', refund_sum: '150.00', refund_time: '20120330235959', refund_reason: 'monkey' }
+      ]
+
+      @alipay::Service::Trade.refund(sample_refunds)
+    end
+    
   end
 
 end

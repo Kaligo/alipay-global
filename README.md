@@ -1,7 +1,9 @@
 # alipay-global
 Unofficial gem for linking up to global.alipay for remote payment
 
-Development of this gem is largely influenced by the [unofficial alipay gem](https://github.com/chloerei/alipay)
+Development of this gem is largely influenced by the [unofficial alipay gem](https://github.com/chloerei/alipay). Code structure has been replicated from here in some areas.
+
+You can find the docs for global.alipay's Cross Border Payment service [here](http://global.alipay.com/product/mobilepayments.htm)
 
 ## Configuration
 
@@ -153,7 +155,7 @@ AlipayGlobal::Service::Notification.check({
 
 #### Results
 
-Hash contains objects representing each currency. Each object is represented by it's named currency code.
+Notification verification output result list:
 
 | Result | Description |
 | ------ | ----------- |

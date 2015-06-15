@@ -1,3 +1,5 @@
+require 'multipart'
+
 require 'alipay_global/sign'
 require 'alipay_global/sign/md5'
 require 'alipay_global/sign/rsa'
