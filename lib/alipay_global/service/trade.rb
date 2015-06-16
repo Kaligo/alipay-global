@@ -36,15 +36,15 @@ module AlipayGlobal
 
         uri = AlipayGlobal::Service.request_uri(params)
 
-        p uri.to_s
+        #p uri.to_s
 
         form_params = { 'partner' => AlipayGlobal.api_partner_id, 'service' => 'forex_refund_file', 'refund_file' => IO.read(file.path) }
 
-        p form_params
+        #p form_params
 
         resp = Net::HTTP.post_form(uri, form_params)
 
-        p resp.body
+        #p resp.body
 
         alipay_resp = Nokogiri::XML(resp.body)
 

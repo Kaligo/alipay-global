@@ -19,6 +19,10 @@ AlipayGlobal.api_secret_key = 'YOUR_KEY'
 #AlipayGlobal.debug_mode = true # Enable parameter check. Default is true.
 ```
 
+## Warning
+
+### Still in testing phase. Gem is not yet ready for production use and is prone to failures/ bugs. Use at your own peril. Full functionality hasn't been achieved yet too
+
 ## Usage
 
 ### Service

@@ -20,7 +20,7 @@ describe "Sign", "signature test" do
         trade_status: 'TRADE_FINISHED',
         sign_type: 'MD5',
         _input_charset: 'utf-8',
-        sign: 'c5caea0b1e2cb8fd0cc7c19734f07dd7'
+        sign: 'a27572b0a6dee50d2d4a1449bfd55e92'
       }
     end
 
