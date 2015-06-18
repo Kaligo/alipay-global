@@ -1,4 +1,4 @@
-require 'open-uri'
+require 'net/http'
 
 module AlipayGlobal
   module Service
