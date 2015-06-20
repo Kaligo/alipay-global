@@ -56,13 +56,59 @@ describe "AlipayGlobal::Service::Trade", "Forex trade actions" do
   end
 
   describe "#refund" do
+    it "should refund correctly for a valid refund url" do
+      params = {
+        out_return_no: "SAMPLE_REFUND_ID",
+        out_trade_no: "SAMPLE_TRANSACTION_ID",
+        return_rmb_amount: 200.00,
+        reason: "hello",
+        gmt_return: (Time.parse("2015-03-20 12:00").getlocal("+08:00")).strftime("%Y%m%d%H%M%S"),
+        currency: "USD"
+      }
+      expected_result = { success: false, message: "PURCHASE_TRADE_NOT_EXIST" }
+
+      assert_equal "https://mapi.alipay.net/gateway.do?service=forex_refund&_input_charset=utf-8&partner=2088101122136241&out_return_no=SAMPLE_REFUND_ID&out_trade_no=SAMPLE_TRANSACTION_ID&return_rmb_amount=200.00&reason=hello&gmt_return=20150320120000&currency=USD&sign_type=MD5&sign=a77e894e71491f41e73ebe40319cc300", @alipay::Service::Trade.build_refund_uri(params).to_s
+      assert_equal  expected_result, @alipay::Service::Trade.refund(params)
+    end
+
+    it "should handle nil reason correctly" do
+      params = {
+        out_return_no: "SAMPLE_REFUND_ID",
+        out_trade_no: "SAMPLE_TRANSACTION_ID",
+        return_rmb_amount: 200.00,
+        gmt_return: (Time.parse("2015-03-20 12:00").getlocal("+08:00")).strftime("%Y%m%d%H%M%S"),
+        currency: "USD"
+      }
+      expected_result = { success: false, message: "PURCHASE_TRADE_NOT_EXIST" }
+
+      assert_equal "https://mapi.alipay.net/gateway.do?service=forex_refund&_input_charset=utf-8&partner=2088101122136241&out_return_no=SAMPLE_REFUND_ID&out_trade_no=SAMPLE_TRANSACTION_ID&return_rmb_amount=200.00&gmt_return=20150320120000&currency=USD&reason=no_reason&sign_type=MD5&sign=c4c09ca3fc78d04b88d9459b02673b1b", @alipay::Service::Trade.build_refund_uri(params).to_s
+      assert_equal  expected_result, @alipay::Service::Trade.refund(params)
+    end
+
+    it "should handle empty reason correctly" do
+      params = {
+        out_return_no: "SAMPLE_REFUND_ID",
+        out_trade_no: "SAMPLE_TRANSACTION_ID",
+        return_rmb_amount: 200.00,
+        gmt_return: (Time.parse("2015-03-20 12:00").getlocal("+08:00")).strftime("%Y%m%d%H%M%S"),
+        reason: " ",
+        currency: "USD"
+      }
+      expected_result = { success: false, message: "PURCHASE_TRADE_NOT_EXIST" }
+
+      assert_equal "https://mapi.alipay.net/gateway.do?service=forex_refund&_input_charset=utf-8&partner=2088101122136241&out_return_no=SAMPLE_REFUND_ID&out_trade_no=SAMPLE_TRANSACTION_ID&return_rmb_amount=200.00&gmt_return=20150320120000&reason=no_reason&currency=USD&sign_type=MD5&sign=c4c09ca3fc78d04b88d9459b02673b1b", @alipay::Service::Trade.build_refund_uri(params).to_s
+      assert_equal  expected_result, @alipay::Service::Trade.refund(params)
+    end
+  end
+
+  describe "#batch_refund" do
     it "should transact refund correctly" do
       sample_refunds = [
         { new_transaction_id: '111222333', old_transaction_id: '444555666', currency: 'USD', refund_sum: 200.00, refund_time: '20120330235959', refund_reason: 'bello minions' },
         { new_transaction_id: '111222333', old_transaction_id: '444555667', currency: 'USD', refund_sum: 150.00, refund_time: '20120330235959', refund_reason: 'monkey' }
       ]
 
-      @alipay::Service::Trade.refund(sample_refunds)
+      @alipay::Service::Trade.batch_refund(sample_refunds)
     end
     
   end

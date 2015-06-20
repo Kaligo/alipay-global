@@ -19,9 +19,25 @@ AlipayGlobal.api_secret_key = 'YOUR_KEY'
 #AlipayGlobal.debug_mode = true # Enable parameter check. Default is true.
 ```
 
-## Warning
+## Note
 
-### Still in testing phase. Gem is not yet ready for production use and is prone to failures/ bugs. Use at your own peril. Full functionality hasn't been achieved yet too
+### Operational Functions
+
+| Feature | Description |
+| ------- | ----------- |
+| AlipayGlobal::Service::Trade.create | |
+| AlipayGlobal::Service::Trade.refund | |
+| AlipayGlobal::Service::Notification.check | |
+| AlipayGlobal::Service::Reconciliation.request | |
+| AlipayGlobal::Service::Exchange.current_rates | |
+
+### Incomplete/ Untested Functions
+
+| Feature | Description |
+| ------- | ----------- |
+| AlipayGlobal::Sign | RSA | Not tested. I do not have an RSA based relationship with Alipay at the moment to test requests via RSA signing |
+| AlipayGlobal::Sign | DSA | Not implemented |
+| AlipayGlobal::Service::Trade.batch_refund | Awaiting verification and support from Alipay: Issue with signing for multipartforms |
 
 ## Usage
 
@@ -41,9 +57,8 @@ AlipayGlobal::Service::Trade.create({ARGUMENTS})
 
 #### Issues (awaiting resolution)
 
-1. create_forex_trade
-  1. rmb_fee issues with MD5 Signature (awaiting Alipay tech response)
-  2. RSA integration: User needs to work with Alipay team to exchange RSA public keys to properly test the content
+1. create
+  1. RSA integration: User needs to work with Alipay team to exchange RSA public keys to properly test the content
 2. testing environment
   1. Alipay mobile site for testing is down. works in production.
 
@@ -88,6 +103,42 @@ AlipayGlobal::Service::Trade.create(
 
 \*\*\* Attention2:The request parameters can only be accepted by the Alipay system if they are signed according to the signature mechanism specified in this document.The parameter “timeout_rule”, the default value is 12h. If you want to use this parameter to change timing, you need to contact Alipay technical. Otherwise you will have an error.
 
+```ruby
+refund
+```
+
+#### Definition
+
+```ruby
+AlipayGlobal::Service::Trade.refund({ARGUMENTS})
+```
+
+#### Example
+
+```ruby
+AlipayGlobal::Service::Trade.refund(
+  out_return_no: "SAMPLE_REFUND_ID",
+  out_trade_no: "SAMPLE_TRANSACTION_ID",
+  return_rmb_amount: 200.00,
+  reason: "hello",
+  gmt_return: (Time.parse("2015-03-20 12:00").getlocal("+08:00")).strftime("%Y%m%d%H%M%S"),
+  currency: "USD"
+)
+# => 'https://mapi.alipay.com/gateway.do?service=create_forex_trade...' #for production
+```
+
+#### ARGUMENTS
+
+| Key | Requirement | Data Type | Description |
+| --- | ----------- | --------- | ----------- |
+| out_return_no | required | string | The new ID which created for refund. |
+| out_trade_no | required | string | The ID for the original transaction. |
+| return_amount | required | float |  |
+| currency | required | string |  |
+| reason | required | string | Reason for refund, out of supply e.g. |
+| return_rmb_amount | optional* | float | This parameter related the RMB price function in the payment interface |
+
+\* return_rmb_amount: if used, then leave return_amount empty
 
 #### Service::Exchange
 
@@ -248,3 +299,7 @@ AlipayGlobal::Service::Reconciliation.request(params)
 {:partner_transaction_id=>"1326244", :amount=>"0.01", :currency=>"HKD", :transaction_time=>#<DateTime: 2013-12-19T16:11:26+00:00 ((2456646j,58286s,0n),+0s,2299161j)>, :settlement_time=>"", :transaction_type=>"P", :service_charge=>"0.00", :status=>"P", :remarks=>"MICROS-Fidelio Information Systems Co. Limited (Testing)"}
 ]
 ```
+
+### Contributing
+
+Feel free to fork this repo and make a PR.

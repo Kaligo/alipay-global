@@ -4,8 +4,7 @@ module AlipayGlobal
       new_hash = {}
       hash.each do |key, value|
         case key
-        when :total_fee, :rmb_fee, :refund_sum
-          value = value.round(2)
+        when :total_fee, :rmb_fee, :refund_sum, :return_rmb_amount, :return_amount
           value = '%.2f' % value
         end
         new_hash[(key.to_s rescue key) || key] = value

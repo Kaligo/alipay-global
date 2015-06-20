@@ -7,7 +7,7 @@ module AlipayGlobal
     def self.request_uri(params, sign = true)
       uri = URI(gateway_url)
       processed_params = sign ? sign_params(params) : params
-      uri.query = URI.encode_www_form(processed_params)
+      uri.query = URI.encode_www_form(AlipayGlobal::Utils.stringify_keys(processed_params))
       uri
     end
 

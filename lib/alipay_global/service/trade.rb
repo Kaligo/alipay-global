@@ -1,11 +1,12 @@
 require "net/http"
+require "rest-client"
 require "uri"
 require "nokogiri"
 
 module AlipayGlobal
   module Service
     module Trade
-
+      BOUNDARY = "AaB03x"
       CREATE_TRADE_REQUIRED_PARAMS = %w( notify_url subject out_trade_no currency )
       CREATE_TRADE_OPTIONAL_PARAMS = %w( return_url body total_fee rmb_fee order_gmt_create order_valid_time timeout_rule auth_token supplier seller_id seller_name seller_industry )
 
@@ -26,7 +27,19 @@ module AlipayGlobal
         AlipayGlobal::Service.request_uri(params).to_s
       end
 
-      def self.refund(refunds)
+      def self.refund(params)
+        resp = Net::HTTP.get(build_refund_uri(params))
+
+        alipay_results = Nokogiri::XML(resp).at_xpath('//alipay')
+
+        alipay_success = alipay_results.at_xpath('//is_success').content == "T"
+
+        alipay_reason = alipay_success ? "" : alipay_results.at_xpath('//error').content
+
+        { success: alipay_success , message: alipay_reason }
+      end
+
+      def self.batch_refund(refunds)
         file = build_refund_file(refunds)
 
         params = {
@@ -38,13 +51,17 @@ module AlipayGlobal
 
         #p uri.to_s
 
-        form_params = { 'partner' => AlipayGlobal.api_partner_id, 'service' => 'forex_refund_file', 'refund_file' => IO.read(file.path) }
+        form_params = { 'partner' => AlipayGlobal.api_partner_id, 'service' => 'forex_refund_file', 'refund_file' => File.read(file.path) }
+
+        #IO.read(file.path)
 
         #p form_params
 
-        resp = Net::HTTP.post_form(uri, form_params)
+        #resp = Net::HTTP.post_form(uri, form_params)
 
         #p resp.body
+
+        resp = RestClient.post uri.to_s, :partner => AlipayGlobal.api_partner_id, :file => File.new(file.path, 'rb'), :service => 'forex_refund_file'
 
         alipay_resp = Nokogiri::XML(resp.body)
 
@@ -56,11 +73,23 @@ module AlipayGlobal
       end
 
       def self.build_refund_file(refunds)
-        file = Tempfile.new(['refund_file','.txt'])
+        file = Tempfile.new(['refund','.txt'])
         refund_content = AlipayGlobal::Utils.write_refund_content(refunds)
         file.write(refund_content)
         file.close
         file
+      end
+
+      def self.build_refund_uri(refund)
+        refund[:reason] = "no_reason" if !refund[:reason] 
+        refund[:reason] = "no_reason" if refund[:reason].strip.length == 0
+        params = {
+          'service'         => 'forex_refund',
+          '_input_charset'  => 'utf-8',
+          'partner'         => AlipayGlobal.api_partner_id
+        }.merge(refund)
+
+        AlipayGlobal::Service.request_uri(params)
       end
     end
   end
