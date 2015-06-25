@@ -124,7 +124,7 @@ AlipayGlobal::Service::Trade.refund(
   gmt_return: (Time.parse("2015-03-20 12:00").getlocal("+08:00")).strftime("%Y%m%d%H%M%S"),
   currency: "USD"
 )
-# => 'https://mapi.alipay.com/gateway.do?service=create_forex_trade...' #for production
+# => 'https://mapi.alipay.net/gateway.do?service=forex_refund...' #for production
 ```
 
 #### ARGUMENTS

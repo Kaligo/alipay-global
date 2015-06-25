@@ -22,7 +22,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "rake"
   spec.add_development_dependency "minitest"
   spec.add_development_dependency "fakeweb"
-  spec.add_development_dependency "nokogiri"
-  spec.add_development_dependency "rest-client", "~> 1.8.0"
+  spec.add_dependency "nokogiri"
+  spec.add_dependency "rest-client", "~> 1.8.0"
 
 end
