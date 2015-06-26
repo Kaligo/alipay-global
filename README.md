@@ -104,6 +104,63 @@ AlipayGlobal::Service::Trade.create(
 \*\*\* Attention2:The request parameters can only be accepted by the Alipay system if they are signed according to the signature mechanism specified in this document.The parameter “timeout_rule”, the default value is 12h. If you want to use this parameter to change timing, you need to contact Alipay technical. Otherwise you will have an error.
 
 ```ruby
+status
+```
+
+#### Definition
+
+```ruby
+AlipayGlobal::Service::Trade.status({ARGUMENTS})
+```
+
+#### Example
+
+```ruby
+AlipayGlobal::Service::Trade.status(
+  out_trade_no: "SAMPLE_TRANSACTION_ID"
+)
+# success => { success: true, message {
+  trade_no: "ALIPAYS_INTERNAL_TRADE_NO",
+  out_trade_no: "YOUR_TRADE_NO_USED",
+  subject: "SUBJECT CONTENT USED IN TRANSACTION",
+  trade_status: "WAIT_BUYER_PAY/TRADE_FINISHED/TRADE_CLOSED"
+} }
+# error => { success: false, message: "ERROR_CODE. # See below" }
+#for production
+```
+
+#### ARGUMENTS
+
+| Key | Requirement | Data Type | Description |
+| --- | ----------- | --------- | ----------- |
+| out_trade_no | required | string | The ID for the original transaction. |
+
+#### RESPONSE
+
+##### Success response
+
+| Trade status | Description |
+| ------------ | ----------- |
+| WAIT_BUYER_PAY | The buyer is expected to make the payment |
+| TRADE_FINISHED | The payment has been made, transaction closes. |
+| TRADE_CLOSED | Transaction closed without payment. |
+
+##### Error response
+Shown when there's an issue with the payment uri created or if the transaction does not exist
+
+| Error Code | Description |
+| ---------- | ----------- |
+| TRADE_NOT_EXIST | This trade number does not exist in Alipay's transaction DB |
+| ILLEGAL_ARGUMENT | Illegal parameters |
+| ILLEGAL_SIGN | Illegal signature |
+| HASH_NO_PRIVILEGE | No sufficient rights to complete the query |
+| ILLEGAL_SERVICE | Service Parameter is incorrect |
+| ILLEGAL_PARTNER | Incorrect Partner ID |
+| ILLEGAL_SIGN_TYPE | Signature is of wrong type. |
+| ILLEGAL_CHARSET | Illegal charset |
+
+
+```ruby
 refund
 ```
 

@@ -55,6 +55,27 @@ describe "AlipayGlobal::Service::Trade", "Forex trade actions" do
 
   end
 
+  describe "#status" do
+    it "should reject non-existent trade" do
+      params = {
+        out_trade_no: "SAMPLE_TRANSACTION_ID"
+      }
+      expected_result = { success: false, message: "TRADE_NOT_EXIST" }
+
+      assert_equal "https://mapi.alipay.net/gateway.do?service=single_trade_query&_input_charset=utf-8&partner=2088101122136241&out_trade_no=SAMPLE_TRANSACTION_ID&sign_type=MD5&sign=d4d3825356fd0799ee16829acffc1460", @alipay::Service::Trade.build_query_uri(params).to_s
+      assert_equal expected_result, @alipay::Service::Trade.status(params)
+    end
+
+    it "should reject uri with missing out_trade_no" do
+      params = { }
+      expected_result = { success: false, message: "ILLEGAL_ARGUMENT" }
+
+      @alipay.should_receive(:warn).with("Some Message")
+      assert_equal "https://mapi.alipay.net/gateway.do?service=single_trade_query&_input_charset=utf-8&partner=2088101122136241&sign_type=MD5&sign=af7007238531b0b0917f3972e24c6c64", @alipay::Service::Trade.build_query_uri(params).to_s
+      assert_equal expected_result, @alipay::Service::Trade.status(params)
+    end
+  end
+
   describe "#refund" do
     it "should refund correctly for a valid refund url" do
       params = {
