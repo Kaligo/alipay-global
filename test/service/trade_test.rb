@@ -70,7 +70,6 @@ describe "AlipayGlobal::Service::Trade", "Forex trade actions" do
       params = { }
       expected_result = { success: false, message: "ILLEGAL_ARGUMENT" }
 
-      @alipay.should_receive(:warn).with("Some Message")
       assert_equal "https://mapi.alipay.net/gateway.do?service=single_trade_query&_input_charset=utf-8&partner=2088101122136241&sign_type=MD5&sign=af7007238531b0b0917f3972e24c6c64", @alipay::Service::Trade.build_query_uri(params).to_s
       assert_equal expected_result, @alipay::Service::Trade.status(params)
     end
