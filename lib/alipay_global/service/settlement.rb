@@ -10,7 +10,7 @@ module AlipayGlobal
         "Over 10 days to Date period",
         "Over limit balance amount record",
         "System exception",
-        "No balance amount data in the period"
+        "No balance amount data in the period",
         "<alipay><is_success>F</is_success><error>ILLEGAL_PARTNER</error></alipay>",
         "Finish date not ahead of today",
         "Finish date ahead of begin date",
