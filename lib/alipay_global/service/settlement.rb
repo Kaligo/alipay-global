@@ -4,6 +4,8 @@ module AlipayGlobal
   module Service
     module Settlement
 
+      RequestError = Class.new(RuntimeError)
+
       SETTLEMENT_REQUIRED_PARAMS = %w( start_date end_date )
 
       SETTLEMENT_ERROR_MESSAGES = [
@@ -25,11 +27,10 @@ module AlipayGlobal
           results = data.read
 
           return false if results.include? "No balance account data in the period"
-          raise ArgumentError, "#{results}" if error_check(results)
+          raise RequestError, "#{results}" if error_check(results)
 
           results.each_line do |line|
-            line = line.strip
-            transaction = line.split("|")
+            transaction = line.strip.split("|")
 
             settlement_resp << {
               partner_transaction_id: transaction[0],
