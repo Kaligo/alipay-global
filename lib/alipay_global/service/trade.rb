@@ -84,8 +84,6 @@ module AlipayGlobal
         alipay_resp = Nokogiri::XML(resp.body)
 
         alipay_results = alipay_resp.at_xpath('//alipay')
-        #puts "success   = " + alipay_results.at_xpath('//is_success').content
-        #puts "error = " + alipay_results.at_xpath('//error').content
 
         file.unlink
       end
