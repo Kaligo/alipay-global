@@ -1,7 +1,7 @@
 module AlipayGlobal
   module Service
     def self.gateway_url
-      AlipayGlobal.environment == "PRODUCTION" ? "https://mapi.alipay.com/gateway.do?" : "https://mapi.alipay.net/gateway.do?"
+      AlipayGlobal.environment == "PRODUCTION" ? "https://mapi.alipay.com/gateway.do?" : "https://openapi.alipaydev.com/gateway.do?"
     end
 
     def self.request_uri(params, sign = true)
