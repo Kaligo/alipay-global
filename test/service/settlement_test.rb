@@ -15,7 +15,7 @@ describe "AlipayGlobal::Service::Settlement", "Settlement request check" do
 
   describe "#build_request" do
     it "should get params correctly" do
-      assert_equal "https://mapi.alipay.net/gateway.do?service=forex_liquidation_file&partner=2088101122136241&start_date=20120202&end_date=20120205&sign_type=MD5&sign=68c26fcba73dc3134bc88bb04a8be865", @alipay::Service::Settlement.build_request(@params)
+      assert_equal "https://openapi.alipaydev.com/gateway.do?service=forex_liquidation_file&partner=2088101122136241&start_date=20120202&end_date=20120205&sign_type=MD5&sign=68c26fcba73dc3134bc88bb04a8be865", @alipay::Service::Settlement.build_request(@params)
     end
   end
 

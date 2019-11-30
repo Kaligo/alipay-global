@@ -10,7 +10,7 @@ describe "AlipayGlobal::Service", "basic service config" do
 
     describe "gateway is test environment by default" do
       it "should return test environment gateway" do
-        assert_equal @alipay::Service.gateway_url, "https://mapi.alipay.net/gateway.do?"
+        assert_equal @alipay::Service.gateway_url, "https://openapi.alipaydev.com/gateway.do?"
       end
     end
 
