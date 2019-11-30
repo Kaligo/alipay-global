@@ -15,7 +15,7 @@ describe "AlipayGlobal::Service::Reconciliation", "Reconciliation request check"
 
   describe "#build_request" do
     it "should get params correctly" do
-      assert_equal "https://mapi.alipay.net/gateway.do?service=forex_compare_file&partner=2088101122136241&start_date=20120202&end_date=20120205&sign_type=MD5&sign=3d09abe0980696bb39bb72c6137266ca", @alipay::Service::Reconciliation.build_request(@params)
+      assert_equal "https://openapi.alipaydev.com/gateway.do?service=forex_compare_file&partner=2088101122136241&start_date=20120202&end_date=20120205&sign_type=MD5&sign=3d09abe0980696bb39bb72c6137266ca", @alipay::Service::Reconciliation.build_request(@params)
     end
   end
 
